@@ -14,6 +14,7 @@ export default class Note extends React.Component {
     }
     return this.renderNote();
   }
+
   renderEdit = () => {
     return <input type="text"
                   ref={(e) => e? e.selectionStart = this.props.task.length : null}
@@ -23,18 +24,31 @@ export default class Note extends React.Component {
                   onKeyPress={this.checkEnter} />;
   };
   renderNote = () => {
-    return <div onClick={this.edit}>{this.props.task}</div>
+    const onDelete = this.props.onDelete;
+    return (
+      <div onClick={this.edit}>
+        <span className="task">{this.props.task}</span>
+        {onDelete ? this.renderDelete() : null}
+      </div>
+      );
   };
+
+  renderDelete = () => {
+    return <button className="delete-note" onClick={this.props.onDelete}>×</button>;
+  };
+
   edit = () => {
     this.setState({
       editing: true
     });
   };
+
   checkEnter = (e) => {
     if(e.key == 'Enter') {
       this.finishEdit(e);
     }
   };
+
   finishEdit = (e) => {
     const value = e.target.value;
 
